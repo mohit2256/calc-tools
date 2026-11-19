@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Calculator</title>
+<meta name="theme-color" content="#000000">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Calculator">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<link rel="manifest" href="/manifest.json">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<!-- ================= CALCULATOR (disguise) ================= -->
+<section id="calc" class="screen">
+  <div class="calc-display">
+    <div id="calcPrev" class="calc-prev"></div>
+    <div id="calcOut" class="calc-out">0</div>
+  </div>
+  <div class="calc-keys" id="calcKeys">
+    <button data-k="C" class="fn">AC</button>
+    <button data-k="⌫" class="fn">⌫</button>
+    <button data-k="%" class="fn">%</button>
+    <button data-k="÷" class="op">÷</button>
+    <button data-k="7">7</button><button data-k="8">8</button><button data-k="9">9</button>
+    <button data-k="×" class="op">×</button>
+    <button data-k="4">4</button><button data-k="5">5</button><button data-k="6">6</button>
+    <button data-k="-" class="op">−</button>
+    <button data-k="1">1</button><button data-k="2">2</button><button data-k="3">3</button>
+    <button data-k="+" class="op">+</button>
+    <button data-k="0" class="zero">0</button>
+    <button data-k=".">.</button>
+    <button data-k="=" class="op">=</button>
+  </div>
+</section>
+
+<!-- ================= FIRST-TIME SETUP ================= -->
+<section id="setup" class="screen hidden">
+  <form id="setupForm" class="setup">
+    <h2>Setup</h2>
+    <p id="cfgWarn" class="warn hidden">⚠️ config.js abhi khali hai. Pehle SETUP.md ka Step 2 karo.</p>
+    <label>Email (Firebase account)<input id="sEmail" type="email" required autocomplete="off"></label>
+    <label>Password (Firebase account)<input id="sPass" type="password" required autocomplete="off"></label>
+    <label>Secret key <small>(dono phone mein bilkul same — isi se messages encrypt hote hain)</small>
+      <input id="sSecret" type="password" minlength="8" required autocomplete="off"></label>
+    <label>Unlock PIN <small>(4–8 digits)</small><input id="sPin" type="password" inputmode="numeric" pattern="\d{4,8}" required></label>
+    <label>PIN dobara<input id="sPin2" type="password" inputmode="numeric" pattern="\d{4,8}" required></label>
+    <label>Decoy PIN <small>(optional — isse khali nakli chat khulegi)</small><input id="sDecoy" type="password" inputmode="numeric" pattern="\d{4,8}"></label>
+    <button type="submit" id="setupBtn">Save</button>
+    <p class="hint">Chat kholne ke liye: calculator mein apna PIN type karo, phir <b>=</b> dabao.</p>
+    <p id="setupErr" class="warn"></p>
+  </form>
+</section>
+
+<!-- ================= CHAT ================= -->
+<section id="chat" class="screen hidden">
+  <header class="chat-head">
+    <div class="who" id="chatTitle">
+      <div class="name">Chat</div>
+      <div class="status" id="status"></div>
+    </div>
+    <button id="lockBtn" class="icon" title="Lock">🔒</button>
+    <button id="menuBtn" class="icon" title="Menu">⋮</button>
+  </header>
+  <div id="timerBanner" class="banner hidden"></div>
+  <main id="msgs" class="msgs"></main>
+  <footer class="composer">
+    <button id="attachBtn" class="icon">＋</button>
+    <textarea id="input" rows="1" placeholder="Message" autocomplete="off" autocorrect="on"></textarea>
+    <button id="sendBtn" class="send">➤</button>
+  </footer>
+  <input id="filePhoto" type="file" accept="image/*" hidden>
+  <input id="fileOnce" type="file" accept="image/*" hidden>
+</section>
+
+<!-- attach menu -->
+<div id="attachSheet" class="sheet hidden">
+  <button data-act="photo">🖼️ Photo</button>
+  <button data-act="once">1️⃣ View-once photo</button>
+  <button data-act="close" class="muted">Cancel</button>
+</div>
+
+<!-- settings menu -->
+<div id="menuSheet" class="sheet hidden">
+  <label class="real-only row">⏱ Disappearing messages
+    <select id="disappearSel">
+      <option value="off">Off</option>
+      <option value="seen">Padhne ke 1 min baad</option>
+      <option value="1h">1 ghante baad</option>
+      <option value="24h">24 ghante baad</option>
+    </select>
+  </label>
+  <button class="real-only" data-act="notif">🔔 Notifications on karo</button>
+  <button class="real-only" data-act="shake">📳 Shake = panic: <span id="shakeState"></span></button>
+  <button class="real-only danger" data-act="wipe">🗑️ Poori chat delete (dono taraf)</button>
+  <button data-act="panic">🚨 Panic (turant band)</button>
+  <button class="real-only danger" data-act="reset">♻️ Is phone se setup hatao</button>
+  <button data-act="close" class="muted">Close</button>
+</div>
+
+<!-- image viewer -->
+<div id="viewer" class="viewer hidden">
+  <img id="viewerImg" alt="">
+  <button id="viewerClose" class="viewer-close">✕</button>
+  <div id="viewerNote" class="viewer-note"></div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="/config.js"></script>
+<script type="module" src="/app.js"></script>
+</body>
+</html>
